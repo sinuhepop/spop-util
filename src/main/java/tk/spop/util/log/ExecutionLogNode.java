@@ -8,61 +8,60 @@ import org.aspectj.lang.Signature;
 
 
 @Data
-public class ExecutionLogNode implements LogNode {
+public class ExecutionLogNode extends LogNode {
 
-	private final Class<?> targetClass;
-	private final Signature signature;
-	private final Object[] args;
-	private final long start = System.currentTimeMillis();
-	private final List<ExecutionLogNode> children = new ArrayList<ExecutionLogNode>();
+    private final Class<?> targetClass;
+    private final Signature signature;
+    private final Object[] args;
+    private final List<LogNode> children = new ArrayList<>();
 
-	private Object returnValue;
-	private Throwable exception;
+    private Object returnValue;
+    private Throwable exception;
 
-	@Setter(AccessLevel.NONE)
-	private long end = 0;
-
-
-	public void finish() {
-		end = System.currentTimeMillis();
-	}
+    @Setter(AccessLevel.NONE)
+    private long end = 0;
 
 
-	public long getTime() {
-		return end - start;
-	}
+    public void finish() {
+        end = System.currentTimeMillis();
+    }
 
 
-	public long getChildrenTime() {
-		long time = 0;
-		for (ExecutionLogNode node : children) {
-			time += node.getTime();
-		}
-		return time;
-	}
+    public long getTime() {
+        return end - getStart();
+    }
 
 
-	public long getSelfTime() {
-		return getTime() - getChildrenTime();
-	}
+    public long getChildrenTime() {
+        long time = 0;
+        for (ExecutionLogNode node : children) {
+            time += node.getTime();
+        }
+        return time;
+    }
 
 
-	public ExecutionLogNode getCurrent() {
-		if (end != 0) {
-			return null;
-		}
-		if (!children.isEmpty()) {
-			ExecutionLogNode current = children.get(children.size() - 1).getCurrent();
-			if (current != null) {
-				return current;
-			}
-		}
-		return this;
-	}
+    public long getSelfTime() {
+        return getTime() - getChildrenTime();
+    }
 
 
-	public void addChild(ExecutionLogNode child) {
-		getCurrent().getChildren().add(child);
-	}
+    public ExecutionLogNode getCurrent() {
+        if (end != 0) {
+            return null;
+        }
+        if (!children.isEmpty()) {
+            ExecutionLogNode current = children.get(children.size() - 1).getCurrent();
+            if (current != null) {
+                return current;
+            }
+        }
+        return this;
+    }
+
+
+    public void addChild(ExecutionLogNode child) {
+        getCurrent().getChildren().add(child);
+    }
 
 }

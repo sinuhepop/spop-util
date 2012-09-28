@@ -12,4 +12,6 @@ import java.lang.annotation.*;
 @Inherited
 public @interface Dynamic {
 
+    String decider();
+
 }
