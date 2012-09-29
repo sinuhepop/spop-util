@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import tk.spop.test.repository.TestRepository;
+import sample.repository.TestRepository;
 import tk.spop.util.AbstractTest;
 import tk.spop.util.spring.dynamic.PersistenceDecider.Persistence;
 

@@ -1,4 +1,4 @@
-package tk.spop.test.repository;
+package sample.repository;
 
 import tk.spop.util.spring.dynamic.Dynamic;
 

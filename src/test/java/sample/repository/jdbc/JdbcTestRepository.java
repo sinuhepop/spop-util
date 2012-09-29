@@ -1,8 +1,8 @@
-package tk.spop.test.repository.jdbc;
+package sample.repository.jdbc;
 
 import org.springframework.stereotype.Repository;
 
-import tk.spop.test.repository.TestRepository;
+import sample.repository.TestRepository;
 
 @Repository
 public class JdbcTestRepository implements TestRepository {

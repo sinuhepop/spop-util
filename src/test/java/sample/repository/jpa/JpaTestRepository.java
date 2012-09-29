@@ -1,8 +1,8 @@
-package tk.spop.test.repository.jpa;
+package sample.repository.jpa;
 
 import org.springframework.stereotype.Repository;
 
-import tk.spop.test.repository.TestRepository;
+import sample.repository.TestRepository;
 
 
 @Repository
