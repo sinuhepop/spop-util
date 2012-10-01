@@ -6,6 +6,8 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 
 @RequiredArgsConstructor
@@ -13,7 +15,10 @@ public class DynamicFactoryBean<T> implements FactoryBean<T> {
 
     private final Class<T> iface;
     private final Map<String, ? extends T> beans;
-    private final DynamicDecider decider;
+    private final String deciderBeanName;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
 
     @Override
@@ -24,6 +29,7 @@ public class DynamicFactoryBean<T> implements FactoryBean<T> {
 
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                DynamicDecider decider = applicationContext.getBean(deciderBeanName, DynamicDecider.class);
                 Object bean = decider.choose(beans);
                 return method.invoke(bean, args);
             }

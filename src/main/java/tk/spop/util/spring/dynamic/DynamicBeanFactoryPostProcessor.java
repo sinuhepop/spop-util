@@ -6,9 +6,10 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.*;
-import org.springframework.beans.factory.support.*;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 
 import tk.spop.util.Reflections;
+import tk.spop.util.spring.SpringUtils;
 
 
 @RequiredArgsConstructor
@@ -31,29 +32,12 @@ public class DynamicBeanFactoryPostProcessor implements BeanFactoryPostProcessor
             Dynamic annotation = iface.getAnnotation(Dynamic.class);
             if (annotation != null) {
                 String beanName = iface.getName() + BEAN_SUFFIX;
-                BeanDefinition definition = getBeanDefinition(beanFactory, iface, annotation);
+                Map<String, ?> beans = beanFactory.getBeansOfType(iface);
+                BeanDefinition definition = SpringUtils.getBeanDefinition(DynamicFactoryBean.class, iface, beans, annotation.decider());
+                definition.setPrimary(true);
                 registry.registerBeanDefinition(beanName, definition);
             }
         }
     }
 
-
-    protected BeanDefinition getBeanDefinition(ConfigurableListableBeanFactory beanFactory, Class<?> iface, Dynamic annotation) {
-
-        Map<String, ?> beans = beanFactory.getBeansOfType(iface);
-
-        DynamicDecider decider = beanFactory.getBean(annotation.decider(), DynamicDecider.class);
-
-        GenericBeanDefinition definition = new GenericBeanDefinition();
-        definition.setBeanClass(DynamicFactoryBean.class);
-        definition.setPrimary(true);
-
-        ConstructorArgumentValues values = new ConstructorArgumentValues();
-        values.addGenericArgumentValue(iface);
-        values.addGenericArgumentValue(beans);
-        values.addGenericArgumentValue(decider);
-        definition.setConstructorArgumentValues(values);
-
-        return definition;
-    }
 }

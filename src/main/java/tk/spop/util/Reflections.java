@@ -1,6 +1,9 @@
 package tk.spop.util;
 
+import java.lang.reflect.Field;
 import java.util.*;
+
+import lombok.SneakyThrows;
 
 
 public class Reflections {
@@ -29,6 +32,14 @@ public class Reflections {
         }
 
         return set;
+    }
+
+
+    @SneakyThrows
+    public static Object get(Object target, String field) {
+        Field f = target.getClass().getField(field);
+        f.setAccessible(true);
+        return f.get(target);
     }
 
 }
