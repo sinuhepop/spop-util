@@ -11,17 +11,15 @@ public class LogAspect {
 	private final ThreadLocal<LogNode> threadLocal = new ThreadLocal<LogNode>();
 
 	@Setter
-	private LogListener listener = new LogPrinter();
+	private LogHandler<? extends LogNode> handler = new LogPrinter();
 
 	public Object aroundAdvice(ProceedingJoinPoint pjp) throws Throwable {
 
-		LogNode node = new LogNode(pjp.getTarget().getClass(),
-				pjp.getSignature(), pjp.getArgs());
+		LogNode node = handler.onInit(pjp.getTarget().getClass(), pjp.getSignature(), pjp.getArgs());
 
 		LogNode rootNode = threadLocal.get();
 		if (rootNode == null) {
 			rootNode = node;
-			listener.onStart(node);
 			threadLocal.set(rootNode);
 		} else {
 			rootNode.addChild(node);
@@ -29,18 +27,18 @@ public class LogAspect {
 
 		try {
 			Object returnValue = pjp.proceed();
-			node.setReturnValue(returnValue);
+			handler.onReturn(node, returnValue);
 			return returnValue;
 
 		} catch (Throwable t) {
-			node.setException(t);
+			handler.onThrow(node, t);
 			throw t;
 
 		} finally {
 			node.finish();
 			if (node.equals(rootNode)) {
 				threadLocal.remove();
-				listener.onFinish(node);
+				handler.onFinish(node);
 			}
 		}
 	}

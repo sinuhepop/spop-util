@@ -7,20 +7,11 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
-import org.aspectj.lang.Signature;
-
 @Data
-public class LogNode {
-
-	private final Class<?> targetClass;
-	private final Signature signature;
-	private final Object[] args;
+public abstract class LogNode {
 
 	private final long start = System.currentTimeMillis();
 	private final List<LogNode> children = new ArrayList<>();
-
-	private Object returnValue;
-	private Throwable exception;
 
 	@Setter(AccessLevel.NONE)
 	private long end = 0;
