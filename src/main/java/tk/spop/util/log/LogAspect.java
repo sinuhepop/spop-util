@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 
-
 @Aspect
 public class LogAspect {
 
@@ -14,10 +13,10 @@ public class LogAspect {
 	@Setter
 	private LogListener listener = new LogPrinter();
 
-
 	public Object aroundAdvice(ProceedingJoinPoint pjp) throws Throwable {
 
-		LogNode node = new LogNode(pjp.getTarget().getClass(), pjp.getSignature(), pjp.getArgs());
+		LogNode node = new LogNode(pjp.getTarget().getClass(),
+				pjp.getSignature(), pjp.getArgs());
 
 		LogNode rootNode = threadLocal.get();
 		if (rootNode == null) {
@@ -45,8 +44,5 @@ public class LogAspect {
 			}
 		}
 	}
-
-
-
 
 }
