@@ -52,12 +52,12 @@
 			<version>2.4.0</version>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>4.1.6.Final</version>
-			<optional>true</optional>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.hibernate</groupId> -->
+<!-- 			<artifactId>hibernate-core</artifactId> -->
+<!-- 			<version>4.1.6.Final</version> -->
+<!-- 			<optional>true</optional> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>org.datanucleus</groupId>
 			<artifactId>datanucleus-core</artifactId>
