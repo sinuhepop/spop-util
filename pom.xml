@@ -91,6 +91,15 @@
 		</dependency>
 
 
+		<!-- Findbugs -->
+		<dependency>
+			<groupId>findbugs</groupId>
+			<artifactId>annotations</artifactId>
+			<version>1.0.0</version>
+			<optional>true</optional>
+		</dependency>
+
+
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>

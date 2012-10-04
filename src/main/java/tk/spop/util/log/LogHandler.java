@@ -2,14 +2,14 @@ package tk.spop.util.log;
 
 import org.aspectj.lang.Signature;
 
-public interface LogHandler<T extends LogNode> {
+public interface LogHandler {
 
-	T onInit(Class<?> clss, Signature signature, Object[] args);
+    void onCall(LogNode node, Class<?> clss, Signature signature, Object[] args);
 
-	void onReturn(T node, Object returnValue);
+    void onReturn(LogNode node, Object returnValue);
 
-	void onThrow(T node, Throwable t);
+    void onThrow(LogNode node, Throwable t);
 
-	void onFinish(T node);
+    void onThreadFinish(LogNode node);
 
 }

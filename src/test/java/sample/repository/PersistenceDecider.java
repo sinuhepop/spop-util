@@ -1,21 +1,24 @@
-package tk.spop.util.spring.dynamic;
+package sample.repository;
 
 import java.util.*;
 import java.util.Map.Entry;
 
-import lombok.*;
+import lombok.Setter;
 
+import org.springframework.stereotype.Component;
 
-@AllArgsConstructor
+import tk.spop.util.spring.dynamic.DynamicDecider;
+
+@Component
 public class PersistenceDecider implements DynamicDecider {
 
-    public enum Persistence {
-        JPA, JDBC
+    public enum Implementation {
+        JPA,
+        JDBC
     }
 
     @Setter
-    private Persistence persistence = Persistence.JPA;
-
+    private Implementation persistence = Implementation.JPA;
 
     @Override
     public <T> T choose(Map<String, T> beans) {

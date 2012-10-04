@@ -5,42 +5,45 @@ import lombok.Setter;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 
+
 @Aspect
 public class LogAspect {
 
-	private final ThreadLocal<LogNode> threadLocal = new ThreadLocal<LogNode>();
+    private final ThreadLocal<LogNode> threadLocal = new ThreadLocal<LogNode>();
 
-	@Setter
-	private LogHandler<? extends LogNode> handler = new LogPrinter();
+    @Setter
+    private LogHandler handler = new LogPrinter();
 
-	public Object aroundAdvice(ProceedingJoinPoint pjp) throws Throwable {
 
-		LogNode node = handler.onInit(pjp.getTarget().getClass(), pjp.getSignature(), pjp.getArgs());
+    public Object aroundAdvice(ProceedingJoinPoint pjp) throws Throwable {
 
-		LogNode rootNode = threadLocal.get();
-		if (rootNode == null) {
-			rootNode = node;
-			threadLocal.set(rootNode);
-		} else {
-			rootNode.addChild(node);
-		}
+        LogNode node = new LogNode();
+        handler.onCall(node, pjp.getTarget().getClass(), pjp.getSignature(), pjp.getArgs());
 
-		try {
-			Object returnValue = pjp.proceed();
-			handler.onReturn(node, returnValue);
-			return returnValue;
+        LogNode rootNode = threadLocal.get();
+        if (rootNode == null) {
+            rootNode = node;
+            threadLocal.set(rootNode);
+        } else {
+            rootNode.addChild(node);
+        }
 
-		} catch (Throwable t) {
-			handler.onThrow(node, t);
-			throw t;
+        try {
+            Object returnValue = pjp.proceed();
+            handler.onReturn(node, returnValue);
+            return returnValue;
 
-		} finally {
-			node.finish();
-			if (node.equals(rootNode)) {
-				threadLocal.remove();
-				handler.onFinish(node);
-			}
-		}
-	}
+        } catch (Throwable t) {
+            handler.onThrow(node, t);
+            throw t;
+
+        } finally {
+            node.finish();
+            if (node.equals(rootNode)) {
+                threadLocal.remove();
+                handler.onThreadFinish(node);
+            }
+        }
+    }
 
 }
