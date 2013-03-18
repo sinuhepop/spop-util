@@ -1,7 +1,11 @@
 package tk.spop.util.jpa;
 
-import javax.persistence.*;
+import java.lang.reflect.Field;
 
+import javax.persistence.*;
+import javax.persistence.metamodel.Attribute;
+
+import lombok.SneakyThrows;
 
 public class JpaUtil {
 
@@ -15,8 +19,7 @@ public class JpaUtil {
         return null;
     }
 
-
-    public String getSql(Query query, JpaProvider provider) {
+    public static String getSql(Query query, JpaProvider provider) {
 
         switch (provider) {
 
@@ -39,12 +42,19 @@ public class JpaUtil {
         return null;
     }
 
-
     /**
      * TODO: Clears the second level cache.
      */
     public void cacheEvict() {
         // entityManager.getEntityManagerFactory().getCache().evictAll();
+    }
+
+    @SuppressWarnings("unchecked")
+    @SneakyThrows
+    public static <T> Attribute<T, ?> getAttribute(Class<T> entityClass, String name) {
+        Class<?> clss = Class.forName(entityClass.getName() + "_");
+        Field field = clss.getField(name);
+        return (Attribute<T, ?>) field.get(null);
     }
 
 }
