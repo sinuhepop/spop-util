@@ -1,13 +1,28 @@
 package tk.spop.util.jpa.criteria;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-import javax.persistence.*;
-import javax.persistence.criteria.*;
-import javax.persistence.metamodel.*;
+import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Fetch;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.Attribute;
+import javax.persistence.metamodel.PluralAttribute;
+import javax.persistence.metamodel.SingularAttribute;
 
 import lombok.Getter;
-import tk.spop.util.page.*;
+import tk.spop.util.page.Page;
+import tk.spop.util.page.PageImpl;
 
 @Getter
 public class Criteria<T> implements Iterable<T> {
@@ -32,7 +47,7 @@ public class Criteria<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new CriteriaIterator<>(this, DEFAULT_FETCH_SIZE);
+        return null; // new CriteriaIterator<T>(this, DEFAULT_FETCH_SIZE);
     }
 
     public T get() {

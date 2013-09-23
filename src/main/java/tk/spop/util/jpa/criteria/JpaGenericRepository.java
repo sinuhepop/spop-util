@@ -8,15 +8,15 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 
-import es.kcsolutions.core.GenericRepository;
-import es.kcsolutions.util.IdUtil;
-import es.kcsolutions.util.Identifiable;
-import es.kcsolutions.util.ReflectionUtil;
+//import es.kcsolutions.core.GenericRepository;
+//import es.kcsolutions.util.IdUtil;
+//import es.kcsolutions.util.Identifiable;
+//import es.kcsolutions.util.ReflectionUtil;
 
 
 @Repository
-public class JpaGenericRepository<T extends Identifiable<K>, K> implements GenericRepository<T, K> {
-
+public class JpaGenericRepository /*<T extends Identifiable<K>, K> implements GenericRepository<T, K> */ {
+/*
 	@PersistenceContext
 	protected EntityManager entityManager;
 
@@ -71,5 +71,5 @@ public class JpaGenericRepository<T extends Identifiable<K>, K> implements Gener
 	protected Criteria<T, K> createCriteria() {
 		return new Criteria<T, K>(entityClass, entityManager);
 	}
-
+*/
 }

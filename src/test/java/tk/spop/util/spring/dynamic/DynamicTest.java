@@ -1,14 +1,20 @@
 package tk.spop.util.spring.dynamic;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
-import sample.repository.*;
+import sample.SampleConfig;
+import sample.repository.PersistenceDecider;
 import sample.repository.PersistenceDecider.Implementation;
-import tk.spop.util.AbstractTest;
+import sample.repository.TestRepository;
 
-public class DynamicTest extends AbstractTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = SampleConfig.class)
+public class DynamicTest {
 
     @Autowired
     private PersistenceDecider persistenceDecider;

@@ -49,6 +49,7 @@ public class JpaUtil {
         // entityManager.getEntityManagerFactory().getCache().evictAll();
     }
 
+    // TODO: Vaia castanya...
     @SuppressWarnings("unchecked")
     @SneakyThrows
     public static <T> Attribute<T, ?> getAttribute(Class<T> entityClass, String name) {
